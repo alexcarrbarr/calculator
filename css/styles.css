@@ -1,0 +1,19 @@
+.calculator {
+    width: 35%;
+}
+
+.button {
+    font-size: 26px;
+    background-color: white;
+    color: black;
+}
+
+.buttonOperator {
+    background-color: yellow;
+    color: black;
+}
+
+.buttonEqual {
+    background-color: orange;
+    color: white;
+}
