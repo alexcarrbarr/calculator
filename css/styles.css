@@ -1,7 +1,3 @@
-.calculator {
-    width: 35%;
-}
-
 .button {
     font-size: 26px;
     background-color: white;
@@ -16,4 +12,8 @@
 .buttonEqual {
     background-color: orange;
     color: white;
+}
+
+#visor {
+    border-radius: 12px;
 }
