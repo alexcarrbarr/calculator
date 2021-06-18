@@ -1,7 +1,5 @@
 # calculator
 
-***(English)***
-
 Development exercise.  
 A simple calculator.
 
