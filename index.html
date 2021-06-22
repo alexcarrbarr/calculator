@@ -10,6 +10,8 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Referencias CSS -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="font-awesome/css/all.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -19,30 +21,33 @@
     <div class="container">
         <!-- Header -->
         <header>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h1>Calculator</h1>
+            <div class="my-4 py-3 bg-light text-center">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Calculator</h1>
+                    </div>
                 </div>
             </div>
         </header>
 
         <!-- Main -->
         <main>
-            <div class="my-4">
+            <div class="my-4 py-3 bg-transparent">
                 <div class="row justify-content-center">
                     <div class="col-10 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                        <div class="container w-100">
+                        <div id="calculator" class="container w-100">
                             <div class="row my-3">
                                 <div class="col-12">
                                     <div class="input-group input-group-lg">
-                                        <input type="text" id="visor" class="form-control border-5">
+                                        <input type="text" id="visor" class="form-control border-5 bg-transparent text-end fs-2"
+                                            readonly value='0'>
                                     </div>
                                 </div>
                             </div>
                             <div class="row my-3">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button" onclick="resetVisor()">
                                         C
                                     </button>
                                 </div>
@@ -54,7 +59,7 @@
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button" onclick="addToVisor('%')">
                                         <svg class="bi" width="32" height="32" fill="currentColor">
                                             <use xlink:href="bootstrap-icons/bootstrap-icons.svg#percent" />
                                         </svg>
@@ -62,7 +67,7 @@
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator" onclick="deleteLastCharacterVisor()">
                                         <svg class="bi" width="32" height="32" fill="currentColor">
                                             <use xlink:href="bootstrap-icons/bootstrap-icons.svg#backspace" />
                                         </svg>
@@ -72,45 +77,51 @@
                             <div class="row my-3">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(7)">
                                         7
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(8)">
                                         8
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(9)">
                                         9
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator">
-                                        %
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator" onclick="addToVisor('/')">
+                                        <i class="fas fa-divide"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="row my-3">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(4)">
                                         4
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(5)">
                                         5
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(6)">
                                         6
                                     </button>
                                 </div>
@@ -124,19 +135,22 @@
                             <div class="row my-3">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(1)">
                                         1
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(2)">
                                         2
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(3)">
                                         3
                                     </button>
                                 </div>
@@ -150,13 +164,15 @@
                             <div class="row my-3">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor('.')">
                                         .
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addToVisor(0)">
                                         0
                                     </button>
                                 </div>
