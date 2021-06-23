@@ -10,8 +10,9 @@
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <!-- Referencias CSS -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="font-awesome/css/all.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -39,15 +40,17 @@
                             <div class="row my-3">
                                 <div class="col-12">
                                     <div class="input-group input-group-lg">
-                                        <input type="text" id="visor" class="form-control border-5 bg-transparent text-end fs-2"
-                                            readonly value='0'>
+                                        <input type="text" id="display"
+                                            class="form-control border-5 bg-transparent text-end fs-2" readonly
+                                            value='0'>
                                     </div>
                                 </div>
                             </div>
                             <div class="row my-3">
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button" onclick="resetVisor()">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="resetDisplay()">
                                         C
                                     </button>
                                 </div>
@@ -59,7 +62,8 @@
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button" onclick="addToVisor('%')">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
+                                        onclick="addCharacterToDisplay('%')">
                                         <svg class="bi" width="32" height="32" fill="currentColor">
                                             <use xlink:href="bootstrap-icons/bootstrap-icons.svg#percent" />
                                         </svg>
@@ -67,7 +71,8 @@
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator" onclick="deleteLastCharacterVisor()">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator"
+                                        onclick="deleteLastCharacterFromDisplay()">
                                         <svg class="bi" width="32" height="32" fill="currentColor">
                                             <use xlink:href="bootstrap-icons/bootstrap-icons.svg#backspace" />
                                         </svg>
@@ -78,27 +83,28 @@
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(7)">
+                                        onclick="addCharacterToDisplay(7)">
                                         7
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(8)">
+                                        onclick="addCharacterToDisplay(8)">
                                         8
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(9)">
+                                        onclick="addCharacterToDisplay(9)">
                                         9
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
-                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator" onclick="addToVisor('/')">
+                                        class="btn btn-light w-100 text-center fw-bold shadow p-3 button buttonOperator"
+                                        onclick="addCharacterToDisplay('/')">
                                         <i class="fas fa-divide"></i>
                                     </button>
                                 </div>
@@ -107,21 +113,21 @@
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(4)">
+                                        onclick="addCharacterToDisplay(4)">
                                         4
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(5)">
+                                        onclick="addCharacterToDisplay(5)">
                                         5
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(6)">
+                                        onclick="addCharacterToDisplay(6)">
                                         6
                                     </button>
                                 </div>
@@ -136,21 +142,21 @@
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(1)">
+                                        onclick="addCharacterToDisplay(1)">
                                         1
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(2)">
+                                        onclick="addCharacterToDisplay(2)">
                                         2
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(3)">
+                                        onclick="addCharacterToDisplay(3)">
                                         3
                                     </button>
                                 </div>
@@ -165,14 +171,14 @@
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor('.')">
+                                        onclick="addCharacterToDisplay('.')">
                                         .
                                     </button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button"
                                         class="btn btn-light w-100 text-center fw-bold shadow p-3 button"
-                                        onclick="addToVisor(0)">
+                                        onclick="addCharacterToDisplay(0)">
                                         0
                                     </button>
                                 </div>
