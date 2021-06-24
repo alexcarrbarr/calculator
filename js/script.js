@@ -1,17 +1,34 @@
 // Global variables.
 var display = document.getElementById('display')
-var actionOperator = false
-var operating01 = ''
-var operating02 = ''
+var operating01 = 0
+var operating02 = 0
 var operator = ''
+var currentOperator = ''
+var operating01Entered = false
+var operating02Entered = false
+var operatorEntered = false
 var total = 0
+var mapCodeOperators = {
+    '=': '=',
+    'Enter': '=',
+    '+': '+',
+    '-': '-',
+    '*': '*',
+    '/': '/',
+    '%': '%',
+    'square-root': 'square-root'
+}
 
 // Function to reset the global vars
 // associated to the last operation and the current result.
 function resetOperationVariables() {
-    operating01 = ''
-    operating02 = ''
-    operator = '+'
+    operating01 = 0
+    operating02 = 0
+    operator = ''
+    currentOperator = ''
+    operating01Entered = false
+    operating02Entered = false
+    operatorEntered = false
     total = 0
 }
 
@@ -44,46 +61,141 @@ function addCharacterToDisplay(key) {
     }
 }
 
-// Function to apply a mathematical operation to 2 given numbers.
+// Function to assign the operator according to the entered key.
+function setOperatorFromCode(key) {
+    return mapCodeOperators[key]
+}
+
+// Function to apply a operation to 2 given numbers.
 function operate(number01, number02, operation) {
     let result = 0
-    // Perform the given mathematical operation.
-    switch (operation) {
-        case '=':
-            result = operate(number01, number02, operator)
-            break;
-        case 'Enter':
-            result = operate(number01, number02, operator)
-            break;
-        case '+':
-            result = number01 + number02
-            break;
-        case '-':
-            result = number01 - number02
-            break;
-        case '*':
-            result = number01 * number02
-            break;
-        case '/':
-            result = number01 / number02
-            break;
-        default:
-            break;
+
+    // Perform the given operation.
+    if (operation == '+') {
+        result = number01 + number02
+    } else if (operation == '-') {
+        result = number01 - number02
+    } else if (operation == '*') {
+        result = number01 * number02
+    } else if (operation == '/') {
+        result = number01 / number02
+    } else if (operation == '%') {
+        // TODO Implement the percentage operation.
+    } else if (operation == 'square-root') {
+        // TODO Implement the square root operation.
     }
+
     // Return the calculated result.
     return result
 }
 
+// Function to take actions about the display, using the given value.
+function actionsForDisplay(value) {
+    // If the operatorEntered var is true, reset the display.
+    if (operatorEntered) {
+        resetDisplay()
+    }
+
+    // Set that an operator has not been entered.
+    operatorEntered = false
+
+    // Add the entered character to the display.
+    addCharacterToDisplay(value)
+}
+
+// Function to take actions about controls, using the given value.
+function actionsForControls(value) {
+    // If the entered key is 'Delete'.
+    if (value == 'Delete') {
+        // Reset the operation variables.
+        resetOperationVariables()
+
+        // Reset the display.
+        resetDisplay()
+    }
+
+    // If the entered key is 'Backspace'.
+    if (value == 'Backspace') {
+        // Delete the last character from the display.
+        deleteLastCharacterFromDisplay()
+    }
+}
+
+// Function to take actions about operators, using the given value.
+function actionsForOperators(value) {
+    // Store the entered operator
+    currentOperator = setOperatorFromCode(value)
+
+    console.log('currentOperator = ' + currentOperator);
+    console.log('operator = ' + operator);
+    console.log('operatorEntered = ' + operatorEntered);
+
+    // If the 1st. operand has not yet been entered,
+    // then store the value entered in the display in the operating01 var.
+    if (!operating01Entered) {
+        operating01 = Number(display.value)
+        operating01Entered = true
+        operator = currentOperator
+    } else {
+        // If this operand has already been entered,
+        // then evaluate if the operation is performed.
+
+        // If the current entered operator is '=',
+        // then redo the previous operation with the second operand previously entered. 
+        // if (currentOperator == '=') {
+        //     operating02Entered = true
+        // } else {
+        if (!operatorEntered) {
+            // If not, then if it has been entered a new value in the display,
+            // then store it as the 2nd. operand, that is, in the operating02 var.
+            operating02 = Number(display.value)
+            operating02Entered = true
+        }
+        // }
+    }
+
+    console.log('operating02Entered = ' + operating02Entered);
+
+    // If the 2nd. operand has been entered, then perform the indicated operation.
+    if (operating02Entered) {
+        console.log('operating01 = ' + operating01);
+        console.log('operating02 = ' + operating02);
+
+        // Operate the operatings with the operator.
+        total = operate(operating01, operating02, operator)
+
+        console.log('total = ' + total);
+
+        // Update the display value.
+        display.value = total
+
+        // Assign the current total to the 1st. operating.
+        operating01 = total
+
+        // Reset that the 2nd. operating has not been entered for a next operation.
+        operating02Entered = false
+    }
+
+    // Store the current operator as the next operator to use,
+    // if it's not the '=' operator.
+    // if (currentOperator != '=') {
+    operator = currentOperator
+    operatorEntered = true
+    // }
+}
+
 // Actions to take when the user press a key.
 document.addEventListener('keydown', function (event) {
-    // console.log(event);
     // KEYS ARRAYS.
     // Display keys array.
     let arrayDisplayKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+
     // Operators keys array.
     let arrayOperatorsKeys = ['+', '-', '*', '/', '%', '=', 'Enter']
+
     // Control keys array.
     let arrayControlKeys = ['Delete', 'Backspace']
+
     // Input keys array.
     let arrayInputKeys = [...arrayDisplayKeys, ...arrayOperatorsKeys, ...arrayControlKeys]
 
@@ -94,53 +206,17 @@ document.addEventListener('keydown', function (event) {
     if (arrayInputKeys.includes(enteredKey)) {
         // Check if the pressed key is a number or character to show on the display.
         if (arrayDisplayKeys.includes(enteredKey)) {
-            // If the actionOperator var is true, reset the display.
-            if (actionOperator) {
-                resetDisplay()
-            }
-            // Set that an operator character has not been entered.
-            actionOperator = false
-            // Add the entered character to the display.
-            addCharacterToDisplay(enteredKey)
+            actionsForDisplay(enteredKey)
         }
+
         // Check if the pressed key is a control key.
         if (arrayControlKeys.includes(enteredKey)) {
-            // If the entered key is "Delete".
-            if (enteredKey == 'Delete') {
-                // Set that an operator character has not been entered.
-                actionOperator = false
-                // Reset the operation variables.
-                resetOperationVariables()
-                // Reset the display.
-                resetDisplay()
-            }
-            // If the entered key is "Backspace".
-            if (enteredKey == 'Backspace') {
-                // Delete the last character from the display.
-                deleteLastCharacterFromDisplay()
-            }
+            actionsForControls(enteredKey)
         }
-        // Check if the pressed key is a mathematical operator key.
+
+        // Check if the pressed key is a operator key.
         if (arrayOperatorsKeys.includes(enteredKey)) {
-            // Read the entered value in the display as a number
-            // and save into the operating01 or operating02 var.
-            if (operating01 == '') {
-                operating01 = Number(display.value)
-            } else if (operating02 == '') {
-                operating02 = Number(display.value)
-            }
-            // Set that an operator character has been entered.
-            actionOperator = true
-            // Operate the operating01 and operating02 vars according to the entered operator,
-            // if the operating01 var was entered before.
-            if ((operating01 != '') && (operating02 != '')) {
-                total = operate(operating01, operating02, enteredKey)
-                // Update the display value.
-                display.value = total
-                // Update some global vars according to the last operation.
-                operating01 = total
-                operator = enteredKey
-            }
+            actionsForOperators(enteredKey)
         }
     }
 });
