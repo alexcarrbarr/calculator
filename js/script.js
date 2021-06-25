@@ -1,33 +1,79 @@
-// Global variables.
+/* GLOBAL VARIABLES */
+
+// Element HTML for display
 var display = document.getElementById('display')
-var operating01 = 0
-var operating02 = 0
+
+// operands
+var operand01 = 0
+var operand02 = 0
+
+// Real operator to apply to operands
 var operator = ''
+
+// Current operator entered by user
 var currentOperator = ''
-var operating01Entered = false
-var operating02Entered = false
+
+// Flag for any operand entered by user
+var operandEnteredByUser = false
+
+// Flag for operand 1 entered by user
+var operand01Entered = false
+
+// Flag for operand 2 entered by user
+var operand02Entered = false
+
+// Flag for operator entered by user
 var operatorEntered = false
+
+// Cumulative total of previous operations
 var total = 0
-var mapCodeOperators = {
-    '=': '=',
-    'Enter': '=',
-    '+': '+',
-    '-': '-',
-    '*': '*',
-    '/': '/',
-    '%': '%',
+
+// Display keys array
+var arrayDisplayKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+
+// Operators keys array
+var arrayOperatorsKeys = ['+', '-', '*', '/', '%']
+
+// Calculation keys array
+var arrayCalculationKeys = ['=', 'Enter']
+
+// Control keys array
+var arrayControlKeys = ['Delete', 'Backspace']
+
+// Input keys array
+var arrayInputKeys = [...arrayDisplayKeys, ...arrayOperatorsKeys, ...arrayCalculationKeys, ...arrayControlKeys]
+
+// Map for input keys and operation codes
+var mapKeysCodes = {
+    '+': 'plus',
+    '-': 'minus',
+    '*': 'times',
+    '/': 'divide',
+    '%': 'percentage'
+}
+
+// Map for operation codes and operations
+var mapCodesOperations = {
+    'plus': '+',
+    'minus': '-',
+    'times': '*',
+    'divide': '/',
+    'percentage': '%',
     'square-root': 'square-root'
 }
+
+/* FUNCTIONS */
 
 // Function to reset the global vars
 // associated to the last operation and the current result.
 function resetOperationVariables() {
-    operating01 = 0
-    operating02 = 0
+    operand01 = 0
+    operand02 = 0
     operator = ''
     currentOperator = ''
-    operating01Entered = false
-    operating02Entered = false
+    operandEnteredByUser = false
+    operand01Entered = false
+    operand02Entered = false
     operatorEntered = false
     total = 0
 }
@@ -61,9 +107,14 @@ function addCharacterToDisplay(key) {
     }
 }
 
-// Function to assign the operator according to the entered key.
-function setOperatorFromCode(key) {
-    return mapCodeOperators[key]
+// Function to assign the operation code according to the given key.
+function setCodeFromKey(key) {
+    return mapKeysCodes[key]
+}
+
+// Function to assign the operation according to the operation code.
+function setOperationFromCode(code) {
+    return mapCodesOperations[code]
 }
 
 // Function to apply a operation to 2 given numbers.
@@ -89,24 +140,29 @@ function operate(number01, number02, operation) {
     return result
 }
 
-// Function to take actions about the display, using the given value.
-function actionsForDisplay(value) {
+// Function to take actions about the display, using the given key.
+function actionsForDisplay(key) {
+    operandEnteredByUser = true
+
     // If the operatorEntered var is true, reset the display.
     if (operatorEntered) {
         resetDisplay()
     }
 
+    // Add the entered character to the display.
+    addCharacterToDisplay(key)
+
     // Set that an operator has not been entered.
     operatorEntered = false
-
-    // Add the entered character to the display.
-    addCharacterToDisplay(value)
 }
 
-// Function to take actions about controls, using the given value.
-function actionsForControls(value) {
+// Function to take actions about controls, using the given key.
+function actionsForControls(key) {
+    operandEnteredByUser = false
+    operatorEntered = false
+
     // If the entered key is 'Delete'.
-    if (value == 'Delete') {
+    if (key == 'Delete') {
         // Reset the operation variables.
         resetOperationVariables()
 
@@ -115,90 +171,91 @@ function actionsForControls(value) {
     }
 
     // If the entered key is 'Backspace'.
-    if (value == 'Backspace') {
+    if (key == 'Backspace') {
         // Delete the last character from the display.
         deleteLastCharacterFromDisplay()
     }
 }
 
-// Function to take actions about operators, using the given value.
-function actionsForOperators(value) {
+// Function to take actions about operators, using the given code.
+function actionsForOperators(code) {
     // Store the entered operator
-    currentOperator = setOperatorFromCode(value)
+    currentOperator = setOperationFromCode(code)
 
-    console.log('currentOperator = ' + currentOperator);
-    console.log('operator = ' + operator);
-    console.log('operatorEntered = ' + operatorEntered);
-
-    // If the 1st. operand has not yet been entered,
-    // then store the value entered in the display in the operating01 var.
-    if (!operating01Entered) {
-        operating01 = Number(display.value)
-        operating01Entered = true
-        operator = currentOperator
-    } else {
-        // If this operand has already been entered,
-        // then evaluate if the operation is performed.
-
-        // If the current entered operator is '=',
-        // then redo the previous operation with the second operand previously entered. 
-        // if (currentOperator == '=') {
-        //     operating02Entered = true
-        // } else {
-        if (!operatorEntered) {
-            // If not, then if it has been entered a new value in the display,
-            // then store it as the 2nd. operand, that is, in the operating02 var.
-            operating02 = Number(display.value)
-            operating02Entered = true
+    if (operandEnteredByUser) {
+        // If the 1st. operanting has not yet been entered, then
+        // store the value entered in the display in the operand01 var.
+        if (!operand01Entered) {
+            operand01 = Number(display.value)
+            operand01Entered = true
+            operator = currentOperator
+        } else {
+            // If not, then if the 2nd. operanting has not yet been entered, then
+            // store the value entered in the display in the operand02 var.
+            operand02 = Number(display.value)
+            operand02Entered = true
         }
-        // }
     }
 
-    console.log('operating02Entered = ' + operating02Entered);
-
-    // If the 2nd. operand has been entered, then perform the indicated operation.
-    if (operating02Entered) {
-        console.log('operating01 = ' + operating01);
-        console.log('operating02 = ' + operating02);
-
-        // Operate the operatings with the operator.
-        total = operate(operating01, operating02, operator)
-
-        console.log('total = ' + total);
+    // If the 1st. and 2nd. operand have been entered by the user, then
+    // perform the calculation with the entered operation.
+    if (operandEnteredByUser && operand01Entered && operand02Entered) {
+        // Operate the operands with the operator.
+        total = operate(operand01, operand02, operator)
 
         // Update the display value.
         display.value = total
 
-        // Assign the current total to the 1st. operating.
-        operating01 = total
-
-        // Reset that the 2nd. operating has not been entered for a next operation.
-        operating02Entered = false
+        // Assign the current total to the 1st. operand.
+        operand01 = total
+        operand01Entered = true
     }
 
-    // Store the current operator as the next operator to use,
-    // if it's not the '=' operator.
-    // if (currentOperator != '=') {
+    // Store the current operator as the next operator to use
     operator = currentOperator
+
+    operandEnteredByUser = false
     operatorEntered = true
-    // }
 }
+
+// Function to take actions about perform the calculation.
+function actionsForCalculate() {
+    if (operandEnteredByUser) {
+        // If the 1st. operanting has not yet been entered, then
+        // store the value entered in the display in the operand01 var.
+        if (!operand01Entered) {
+            operand01 = Number(display.value)
+            operand01Entered = true
+            operator = currentOperator
+        } else {
+            // If not, then if the 2nd. operanting has not yet been entered, then
+            // store the value entered in the display in the operand02 var.
+            operand02 = Number(display.value)
+            operand02Entered = true
+        }
+    }
+
+    // If the 1st. operand has been entered, then
+    // perform the calculation with the entered operation.
+    if (operand01Entered && operand02Entered) {
+        // Operate the operands with the operator.
+        total = operate(operand01, operand02, operator)
+
+        // Update the display value.
+        display.value = total
+
+        // Assign the current total to the 1st. operand.
+        operand01 = total
+        operand01Entered = true
+    }
+
+    operandEnteredByUser = false
+}
+
+/* EVENTS */
 
 // Actions to take when the user press a key.
 document.addEventListener('keydown', function (event) {
-    // KEYS ARRAYS.
-    // Display keys array.
-    let arrayDisplayKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
-
-    // Operators keys array.
-    let arrayOperatorsKeys = ['+', '-', '*', '/', '%', '=', 'Enter']
-
-    // Control keys array.
-    let arrayControlKeys = ['Delete', 'Backspace']
-
-    // Input keys array.
-    let arrayInputKeys = [...arrayDisplayKeys, ...arrayOperatorsKeys, ...arrayControlKeys]
-
     // Read the pressed key.
     let enteredKey = event.key
 
@@ -214,9 +271,16 @@ document.addEventListener('keydown', function (event) {
             actionsForControls(enteredKey)
         }
 
-        // Check if the pressed key is a operator key.
+        // Check if the pressed key is an operator key.
         if (arrayOperatorsKeys.includes(enteredKey)) {
-            actionsForOperators(enteredKey)
+            // Map the entered key to the corresponding operation code.
+            let enteredCode = setCodeFromKey(enteredKey)
+            actionsForOperators(enteredCode)
+        }
+
+        // Check if the pressed key is an calculation key.
+        if (arrayCalculationKeys.includes(enteredKey)) {
+            actionsForCalculate()
         }
     }
 });
